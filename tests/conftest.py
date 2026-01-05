@@ -17,6 +17,8 @@ TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=Fals
 
 Base.metadata.create_all(bind=engine)
 
+
+
 @pytest.fixture()
 def session():
     Base.metadata.drop_all(bind=engine)
@@ -38,3 +40,15 @@ def client(session):
             session.close()
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
+
+
+@pytest.fixture
+def test_user(client):
+    user_data = {'email':'rakesh@gmail.com',
+                'password':'password123'}
+    res = client.post('/users/',json=user_data)
+    assert res.status_code == 201
+    print(res.json())
+    new_user = res.json()
+    new_user['password'] = user_data['password']
+    return new_user
