@@ -1,3 +1,4 @@
+from urllib import response
 from app import schemas
 import pytest
 from jose import jwt
@@ -29,3 +30,16 @@ def test_login_user(client,test_user):
     assert id == test_user['id']
     assert login_res.token_type == 'bearer'
     assert res.status_code == 200
+
+@pytest.mark.parametrize("email,password,status_code",[
+    ('wrongmail@gamil.com','password123',403),
+    ('sanjeev@gmail.com','password123',403),
+    ('wrong@gmail.com','wrongpassword',403),
+    (None,'password123',422),
+    ('sanjeev@gmail.com',None,422)
+    ])
+def test_incorrect_login(test_user,client,email,password,status_code):
+    res = client.post("/login",data={'username':email,'password':password})
+
+    assert res.status_code == status_code
+    # assert res.json().get('detail') == 'Invalid Credentails'
