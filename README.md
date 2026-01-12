@@ -1,10 +1,10 @@
 
 
-# 📘 Blog Post API 
+# 📘 Blog Post Application
 
 ## 1️⃣ Project Overview
 
-This project is a **Blog Post REST API** built using **FastAPI**, where users can create, like, and manage blog posts securely.
+This project is a **full-stack Blog Post Application** with a **FastAPI backend** and **React frontend**, where users can create, like, and manage blog posts securely.
 
 The system supports:
 
@@ -12,6 +12,7 @@ The system supports:
 * Post ownership & authorization
 * Like (vote) and unlike functionality
 * PostgreSQL database
+* Modern React frontend with routing and state management
 * Dockerized deployment
 * Database migrations using Alembic
 
@@ -19,6 +20,7 @@ The system supports:
 
 ## 2️⃣ Tech Stack Used
 
+### Backend
 * **Backend Framework:** FastAPI
 * **Database:** PostgreSQL
 * **ORM:** SQLAlchemy
@@ -26,6 +28,14 @@ The system supports:
 * **Migrations:** Alembic
 * **Containerization:** Docker & Docker Compose
 * **API Docs:** OpenAPI (Swagger UI)
+
+### Frontend
+* **Framework:** React 19
+* **Build Tool:** Vite
+* **Routing:** React Router DOM
+* **HTTP Client:** Axios
+* **State Management:** React Context API
+* **Styling:** CSS3 with modern design
 
 ---
 
@@ -232,3 +242,105 @@ These provide:
 * Interactive API testing
 * Request/response schema
 * Authentication testing
+
+---
+
+## 1️⃣1️⃣ Frontend Setup
+
+The React frontend is located in the `frontend/` directory.
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation & Running
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file:
+```bash
+VITE_API_URL=http://localhost:8000
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173` (or the port shown in the terminal).
+
+### Frontend Features
+
+* **Authentication:** Login and Signup pages
+* **Post Management:** View, create, edit, and delete posts
+* **Search & Pagination:** Search posts and navigate through pages
+* **Voting:** Upvote and remove votes on posts
+* **Protected Routes:** All routes require authentication
+* **Responsive Design:** Works on desktop and mobile devices
+
+### Building for Production
+
+```bash
+cd frontend
+npm run build
+```
+
+The built files will be in the `frontend/dist` directory.
+
+---
+
+## 1️⃣2️⃣ Running the Full Application
+
+### Option 1: Run Backend and Frontend Separately
+
+1. **Start the Backend:**
+```bash
+# Make sure PostgreSQL is running
+# Set up your .env file with database credentials
+uvicorn app.main:app --reload
+```
+
+2. **Start the Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Option 2: Docker (Backend Only)
+
+```bash
+docker-compose up
+```
+
+**Note:** The frontend runs separately and connects to the backend API.
+
+---
+
+## 1️⃣3️⃣ Project Structure
+
+```
+.
+├── app/                    # FastAPI backend application
+│   ├── routers/           # API route handlers
+│   ├── models.py          # Database models
+│   ├── schemas.py         # Pydantic schemas
+│   └── main.py            # FastAPI app entry point
+├── frontend/              # React frontend application
+│   ├── src/
+│   │   ├── components/    # Reusable React components
+│   │   ├── pages/         # Page components
+│   │   ├── context/       # React Context (Auth)
+│   │   └── services/      # API service layer
+│   └── package.json       # Frontend dependencies
+├── alembic/               # Database migrations
+└── requirements.txt       # Backend dependencies
+```
