@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from . import models
 from .database import engine
-from .routers import post,user,auth,vote
+from .routers import post,user,auth,vote,jobs
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,7 +25,13 @@ app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(vote.router)
+app.include_router(jobs.router)
 
 @app.get("/")
 def root():
     return {"message": "Hello World"}
+
+@app.post("/jobs/run")
+def run_job():
+    print("Batch file triggered this API")
+    return {"status": "job started"}
