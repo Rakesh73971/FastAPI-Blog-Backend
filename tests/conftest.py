@@ -69,36 +69,17 @@ def authorized_client(client,token):
     return client
 
 @pytest.fixture
-def test_posts(test_user, session, test_user2):
-    posts_data = [{
-        "title": "first title",
-        "content": "first content",
-        "owner_id": test_user['id']
-    }, {
-        "title": "2nd title",
-        "content": "2nd content",
-        "owner_id": test_user['id']
-    },
-        {
-        "title": "3rd title",
-        "content": "3rd content",
-        "owner_id": test_user['id']
-    }, {
-        "title": "3rd title",
-        "content": "3rd content",
-        "owner_id": test_user2['id']
-    }]
+def test_posts(test_user, test_user2, session):
+    posts_data = [
+        {"title": "first title", "content": "first content", "owner_id": test_user["id"]},
+        {"title": "2nd title", "content": "2nd content", "owner_id": test_user["id"]},
+        {"title": "3rd title", "content": "3rd content", "owner_id": test_user["id"]},
+        {"title": "other user's post", "content": "content", "owner_id": test_user2["id"]},
+    ]
 
-    def create_post_model(post):
-        return models.Post(**post)
-
-    post_map = map(create_post_model, posts_data)
-    posts = list(post_map)
+    posts = [models.Post(**post) for post in posts_data]
 
     session.add_all(posts)
-    # session.add_all([models.Post(title="first title", content="first content", owner_id=test_user['id']),
-    #                 models.Post(title="2nd title", content="2nd content", owner_id=test_user['id']), models.Post(title="3rd title", content="3rd content", owner_id=test_user['id'])])
     session.commit()
 
-    posts = session.query(models.Post).all()
-    return posts
+    return session.query(models.Post).all()
